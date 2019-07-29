@@ -86,6 +86,8 @@ module system_top (
   inout   [ 7:0]  gpio_status,
 
   output          spi_csn,
+  output          spi_csn1,
+  output          spi_csn2,
   output          spi_clk,
   output          spi_mosi,
   input           spi_miso,
@@ -98,8 +100,8 @@ module system_top (
   input           spi1_miso,
 //  );//,
 
-  output  [24:0]  gp_out,
-  input   [24:0]  gp_in);
+  output  [21:0]  gp_out,
+  input   [21:0]  gp_in);
 
 
   // internal signals
@@ -115,9 +117,9 @@ module system_top (
   assign tx_gnd = 2'd0;
   assign clkout_out = clkout_in;
 //  assign gp_in_s[31: 0] = gp_out_s[31:0] ;
-  assign gp_out[24:0] = gp_out_s[24:0];
-  assign gp_in_s[31:25] = gp_out_s[31:25];
-  assign gp_in_s[24: 0] = gp_in[24:0];
+  assign gp_out[21:0] = gp_out_s[21:0];
+  assign gp_in_s[31:22] = gp_out_s[31:22];
+  assign gp_in_s[21: 0] = gp_in[21:0];
 // board gpio - 31-0
 
   assign gpio_i[31:11] = gpio_o[31:11];
@@ -184,8 +186,8 @@ module system_top (
     .spi0_clk_i (1'b0),
     .spi0_clk_o (spi_clk),
     .spi0_csn_0_o (spi_csn),
-    .spi0_csn_1_o (),
-    .spi0_csn_2_o (),
+    .spi0_csn_1_o (spi_csn1),
+    .spi0_csn_2_o (spi_csn2),
     .spi0_csn_i (1'b1),
     .spi0_sdi_i (spi_miso),
     .spi0_sdo_i (1'b0),
