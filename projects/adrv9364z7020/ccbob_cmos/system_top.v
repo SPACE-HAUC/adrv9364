@@ -63,7 +63,7 @@ module system_top (
   inout           iic_scl,
   inout           iic_sda,
 
-  inout   [16:0]  gpio_bd,
+  inout   [30:0]  gpio_bd,
 
   input           rx_clk_in,
   input           rx_frame_in,
@@ -102,8 +102,8 @@ module system_top (
   inout           i2c1_sda,
   output          i2c1_scl,
   
-  output  [17:0]  gp_out,
-  input   [17:0]  gp_in);
+  output  [10:0]  gp_out,
+  input   [10:0]  gp_in);
 
 
   // internal signals
@@ -124,17 +124,17 @@ module system_top (
   assign tx_gnd = 2'd0;
   assign clkout_out = clkout_in;
 //  assign gp_in_s[31: 0] = gp_out_s[31:0] ;
-  assign gp_out[17:0] = gp_out_s[17:0];
-  assign gp_in_s[31:18] = gp_out_s[31:18];
-  assign gp_in_s[17: 0] = gp_in[17:0];
+  assign gp_out[10:0] = gp_out_s[10:0];
+  assign gp_in_s[31:11] = gp_out_s[31:11];
+  assign gp_in_s[10: 0] = gp_in[10:0];
 // board gpio - 31-0
 
-  assign gpio_i[31:17] = gpio_o[31:17];
+  assign gpio_i[31:31] = gpio_o[31:31];
 
-  ad_iobuf #(.DATA_WIDTH(17)) i_iobuf_bd (
-    .dio_t (gpio_t[16:0]),
-    .dio_i (gpio_o[16:0]),
-    .dio_o (gpio_i[16:0]),
+  ad_iobuf #(.DATA_WIDTH(31)) i_iobuf_bd (
+    .dio_t (gpio_t[30:0]),
+    .dio_i (gpio_o[30:0]),
+    .dio_o (gpio_i[30:0]),
     .dio_p (gpio_bd));
 
   // ad9361 gpio - 63-32

@@ -2,27 +2,50 @@
 ## constraints (ccbrk.c + ccbrk_lb.a)
 ## ad9361 clkout forward
 
-set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports clkout_out]
+set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports clkout_out] 
 
 ## push-buttons- led- dip-switches- loopbacks- (ps7 gpio)
 
-set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[0]}]
-set_property -dict {PACKAGE_PIN T16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[1]}]
-set_property -dict {PACKAGE_PIN U17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[2]}]
-set_property -dict {PACKAGE_PIN Y19 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[3]}]
+set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[0]}] ; ##U1,Y14,PB_GPIO_1,JX4,38,P6,19 [S7 on BOB]     960
+set_property -dict {PACKAGE_PIN T16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[1]}] ; ##U1,T16,PB_GPIO_2,JX4,41,P6,26 [S8 on BOB]
+set_property -dict {PACKAGE_PIN U17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[2]}] ; ##U1,U17,PB_GPIO_3,JX4,41,P6,28 [S9 on BOB]
+set_property -dict {PACKAGE_PIN Y19 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[3]}] ; ##U1,Y19,LED_GPIO_0,JX4,69,P7,16 [DS3 on BOB]
 
 ## orphans- io- (ps7 gpio)
 
-set_property -dict {PACKAGE_PIN V5 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[4]}]
-set_property -dict {PACKAGE_PIN V11 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[5]}]
-set_property -dict {PACKAGE_PIN V10 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[6]}]
-set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[7]}]
+set_property -dict {PACKAGE_PIN V5 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[4]}] ; ##U1,V5,IO_L06_13_JX2_P,JX2,16,P2,13             964
+set_property -dict {PACKAGE_PIN V11 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[5]}] ; ##U1,V11,IO_L21_13_JX2_P,JX2,67,P2,52
+set_property -dict {PACKAGE_PIN V10 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[6]}] ; ##U1,V10,IO_L21_13_JX2_N,JX2,69,P2,54
+set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[7]}] ; ##U1,V16,IO_L18_34_JX4_P,JX4,68,P7,30 [PWM for BOB fan]
 
 ## ps7- fixed io- to- fpga regular io (ps7 gpio)
 
-set_property -dict {PACKAGE_PIN V15 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[8]}]
-set_property -dict {PACKAGE_PIN Y18 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[9]}]
-set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[10]}]
+set_property -dict {PACKAGE_PIN V15 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[8]}] ; ##U1,V15,IO_L10_34_JX4_P,JX4,42,P6,25           968
+set_property -dict {PACKAGE_PIN Y18 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[9]}] ; ##U1,Y18,IO_L17_34_JX4_P,JX4,67,P6,9
+set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[10]}] ; ##U1,Y17,IO_L07_34_JX4_N,JX4,37,P6,20
+
+## ps7 gpio
+
+set_property -dict {PACKAGE_PIN V20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[11]}] ; ##U1,V20,IO_L16_34_JX4_P,JX4,58,P7,5           971
+set_property -dict {PACKAGE_PIN V17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[12]}] ; ##U1,V17,IO_L21_34_JX4_P,JX4,77,P7,26
+set_property -dict {PACKAGE_PIN R17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[13]}] ; ##U1,R17,IO_L19_34_JX4_N,JX4,75,P7,20
+set_property -dict {PACKAGE_PIN P20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[14]}] ; ##U1,P20,IO_L14_SRCC_34_JX4_N,JX4,54,P7,3
+set_property -dict {PACKAGE_PIN R16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[15]}] ; ##U1,R16,IO_L19_34_JX4_P,JX4,73,P7,18          975
+set_property -dict {PACKAGE_PIN N20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[16]}] ; ##U1,N20,IO_L14_SRCC_34_JX4_P,JX4,52,P7,1
+set_property -dict {PACKAGE_PIN P19 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[17]}] ; ##U1,P19,IO_L13_MRCC_34_JX4_N,JX4,53,P7,4
+set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[18]}] ; ##U1,W14,IO_L08_34_JX4_P,JX4,36,P6,17
+set_property -dict {PACKAGE_PIN T20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[19]}] ; ##U1,T20,IO_L15_34_JX4_P,JX4,57,P7,6
+set_property -dict {PACKAGE_PIN U18 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[20]}] ; ##U1,U18,IO_L12_MRCC_34_JX4_P,JX4,46,P6,29     980
+set_property -dict {PACKAGE_PIN T15 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[21]}] ; ##U1,T15,IO_L05_34_JX4_N,JX4,33,P6,16
+set_property -dict {PACKAGE_PIN U12 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[22]}] ; ##U1,U12,IO_L02_34_JX4_N,JX4,34,P6,3
+set_property -dict {PACKAGE_PIN Y16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[23]}] ; ##U1,Y16,IO_L07_34_JX4_P,JX4,35,P6,18
+set_property -dict {PACKAGE_PIN V12 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[24]}] ; ##U1,V12,IO_L04_34_JX4_P,JX4,26,P6,5
+set_property -dict {PACKAGE_PIN U14 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[25]}] ; ##U1,U14,IO_L11_SRCC_34_JX4_P,JX4,45,P6,30     985
+set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[26]}] ; ##U1,W13,IO_L04_34_JX4_N,JX4,28,P6,7
+set_property -dict {PACKAGE_PIN U15 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[27]}] ; ##U1,U15,IO_L11_SRCC_34_JX4_N,JX4,47,P6,32
+set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[28]}] ; ##U1,P14,IO_L06_34_JX4_P,JX4,32,P6,13
+set_property -dict {PACKAGE_PIN N18 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[29]}] ; ##U1,N18,IO_L13_MRCC_34_JX4_P,JX4,51,P7,2
+set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[30]}] ; ##U1,R14,IO_L06_34_JX4_N,JX4,34,P6,15          990
 
 ## ps7- fixed io- to- ps7- fixed io (reference only)
 ## U1,B14,PS_MIO47_501_JX4,JX4,94,PS_MIO47_501_JX4,P7,24 == U1,D16,PS_MIO46_501_JX4,JX4,92,PS_MIO46_501_JX4,P7,22
@@ -130,32 +153,13 @@ set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports {gp_out[9]}]
 set_property -dict {PACKAGE_PIN Y13 IOSTANDARD LVCMOS33} [get_ports {gp_in[9]}]
 set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS33} [get_ports {gp_out[10]}]
 set_property -dict {PACKAGE_PIN T19 IOSTANDARD LVCMOS33} [get_ports {gp_in[10]}]
-set_property -dict {PACKAGE_PIN U12 IOSTANDARD LVCMOS33} [get_ports {gp_in[11]}]
-set_property -dict {PACKAGE_PIN V12 IOSTANDARD LVCMOS33} [get_ports {gp_in[12]}]
-set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {gp_in[13]}]
-set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports {gp_in[14]}]
-set_property -dict {PACKAGE_PIN T15 IOSTANDARD LVCMOS33} [get_ports {gp_out[11]}]
-set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports {gp_in[15]}]
-set_property -dict {PACKAGE_PIN Y16 IOSTANDARD LVCMOS33} [get_ports {gp_out[12]}]
-set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {gp_in[16]}]
-set_property -dict {PACKAGE_PIN U14 IOSTANDARD LVCMOS33} [get_ports {gp_out[13]}]
-set_property -dict {PACKAGE_PIN U18 IOSTANDARD LVCMOS33} [get_ports {gp_in[17]}]
-set_property -dict {PACKAGE_PIN U15 IOSTANDARD LVCMOS33} [get_ports {gp_out[14]}]
-set_property -dict {PACKAGE_PIN N18 IOSTANDARD LVCMOS33} [get_ports {gp_out[15]}]
-set_property -dict {PACKAGE_PIN N20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[16]}]
-set_property -dict {PACKAGE_PIN P19 IOSTANDARD LVCMOS33} [get_ports {gp_out[16]}]
-set_property -dict {PACKAGE_PIN P20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[14]}]
-set_property -dict {PACKAGE_PIN T20 IOSTANDARD LVCMOS33} [get_ports {gp_out[17]}]
-set_property -dict {PACKAGE_PIN V20 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[11]}]
-set_property -dict {PACKAGE_PIN R16 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[15]}]
-set_property -dict {PACKAGE_PIN R17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[13]}]
-set_property -dict {PACKAGE_PIN V17 IOSTANDARD LVCMOS33} [get_ports {gpio_bd[12]}]
 
-set_property PACKAGE_PIN U19 [get_ports i2c1_scl]
+
+set_property PACKAGE_PIN U19 [get_ports i2c1_scl] ; ##U1,U19,IO_L12_MRCC_34_JX4_N,JX4,48,P6,31
 set_property IOSTANDARD LVCMOS33 [get_ports i2c1_scl]
 set_property PULLUP true [get_ports i2c1_scl]
 
-set_property PACKAGE_PIN U20 [get_ports i2c1_sda]
+set_property PACKAGE_PIN U20 [get_ports i2c1_sda] ; ##U1,U20,IO_L15_34_JX4_N,JX4,59,P7,8
 set_property IOSTANDARD LVCMOS33 [get_ports i2c1_sda]
 set_property PULLUP true [get_ports i2c1_sda]
 
