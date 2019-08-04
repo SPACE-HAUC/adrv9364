@@ -100,19 +100,19 @@ module system_top (
   input           spi1_miso,
 //  );//,
   inout           i2c1_sda,
-  output          i2c1_scl,
+  inout           i2c1_scl,
   
   output  [10:0]  gp_out,
   input   [10:0]  gp_in);
 
 
   // internal signals
-  wire            i2c1_sda_i;
-  wire            i2c1_sda_o;
-  wire            i2c1_sda_t;
-  wire            i2c1_scl_i;
-  wire            i2c1_scl_o;
-  wire            i2c1_scl_t;  
+//  wire            i2c1_sda_i;
+//  wire            i2c1_sda_o;
+//  wire            i2c1_sda_t;
+//  wire            i2c1_scl_i;
+//  wire            i2c1_scl_o;
+//  wire            i2c1_scl_t;  
   wire    [31:0]  gp_out_s;
   wire    [31:0]  gp_in_s;
   wire    [63:0]  gpio_i;
@@ -153,19 +153,19 @@ module system_top (
               gpio_ctl,           // 43:40
               gpio_status}));     // 39:32
               
-  ad_iobuf #(.DATA_WIDTH(1)) i_iobuf_sda (
-    .dio_t (i2c1_sda_t),
-    .dio_i (i2c1_sda_o),
-    .dio_o (i2c1_sda_i),
-    .dio_p (i2c1_sda)
-  );
+//  ad_iobuf #(.DATA_WIDTH(1)) i_iobuf_sda (
+//    .dio_t (i2c1_sda_t),
+//    .dio_i (i2c1_sda_o),
+//    .dio_o (i2c1_sda_i),
+//    .dio_p (i2c1_sda)
+//  );
   
-  ad_iobuf #(.DATA_WIDTH(1)) i_iobuf_scl (
-      .dio_t (i2c1_scl_t),
-      .dio_i (i2c1_scl_o),
-      .dio_o (i2c1_scl_i),
-      .dio_p (i2c1_scl)
-    );
+//  ad_iobuf #(.DATA_WIDTH(1)) i_iobuf_scl (
+//      .dio_t (i2c1_scl_t),
+//      .dio_i (i2c1_scl_o),
+//      .dio_o (i2c1_scl_i),
+//      .dio_p (i2c1_scl)
+//    );
 
   // instantiations
 
@@ -197,9 +197,17 @@ module system_top (
     .gpio_i (gpio_i),
     .gpio_o (gpio_o),
     .gpio_t (gpio_t),
+//    .i2c1_sda_i (i2c1_sda_i),
+//    .i2c1_sda_o (i2c1_sda_o),
+//    .i2c1_sda_t (i2c1_sda_t),
+//    .i2c1_scl_i (i2c1_scl_i),
+//    .i2c1_scl_o (i2c1_scl_o),
+//    .i2c1_scl_t (i2c1_scl_t),
     .gps_pps (1'b0),
     .iic_main_scl_io (iic_scl),
     .iic_main_sda_io (iic_sda),
+    .i2c1_scl_io (i2c1_scl),
+    .i2c1_sda_io (i2c1_sda),
     .otg_vbusoc (1'b0),
     .rx_clk_in (rx_clk_in),
     .rx_data_in (rx_data_in),
