@@ -40,6 +40,8 @@ module system_wrapper
     gps_pps,
     iic_main_scl_io,
     iic_main_sda_io,
+    i2c0_scl_io,
+    i2c0_sda_io,
     i2c1_scl_io,
     i2c1_sda_io,
     otg_vbusoc,
@@ -118,6 +120,8 @@ module system_wrapper
   input gps_pps;
   inout iic_main_scl_io;
   inout iic_main_sda_io;
+  inout i2c0_scl_io;
+  inout i2c0_sda_io;
   inout i2c1_scl_io;
   inout i2c1_sda_io;
   input otg_vbusoc;
@@ -203,6 +207,14 @@ module system_wrapper
   wire iic_main_sda_io;
   wire iic_main_sda_o;
   wire iic_main_sda_t;
+  wire i2c0_scl_io;
+  wire i2c0_sda_io;
+  wire i2c0_scl_i;
+  wire i2c0_scl_o;
+  wire i2c0_scl_t;
+  wire i2c0_sda_i;
+  wire i2c0_sda_o;
+  wire i2c0_sda_t;
   wire i2c1_scl_io;
   wire i2c1_sda_io;
   wire i2c1_scl_i;
@@ -268,6 +280,18 @@ module system_wrapper
         .IO(iic_main_sda_io),
         .O(iic_main_sda_i),
         .T(iic_main_sda_t));
+  IOBUF i2c0_scl_iobuf
+       (.I(i2c0_scl_o),
+        .IO(i2c0_scl_io),
+        .O(i2c0_scl_i),
+        .T(i2c0_scl_t)
+       );
+  IOBUF i2c0_sda_iobuf
+       (.I(i2c0_sda_o),
+        .IO(i2c0_sda_io),
+        .O(i2c0_sda_i),
+        .T(i2c0_sda_t)
+       );
   IOBUF i2c1_scl_iobuf
        (.I(i2c1_scl_o),
         .IO(i2c1_scl_io),
@@ -315,6 +339,12 @@ module system_wrapper
         .iic_main_sda_i(iic_main_sda_i),
         .iic_main_sda_o(iic_main_sda_o),
         .iic_main_sda_t(iic_main_sda_t),
+        .i2c0_sda_i(i2c0_sda_i),
+        .i2c0_sda_o(i2c0_sda_o),
+        .i2c0_sda_t(i2c0_sda_t),
+        .i2c0_scl_i(i2c0_scl_i),
+        .i2c0_scl_o(i2c0_scl_o),
+        .i2c0_scl_t(i2c0_scl_t),        
         .i2c1_sda_i(i2c1_sda_i),
         .i2c1_sda_o(i2c1_sda_o),
         .i2c1_sda_t(i2c1_sda_t),

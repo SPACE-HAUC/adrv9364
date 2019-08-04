@@ -33,6 +33,26 @@
 // ***************************************************************************
 // ***************************************************************************
 
+/*
+ Existence of these external ports in the IP (block design) must be verified:
+   i2c0_scl_i;
+   i2c0_scl_o;
+   i2c0_scl_t;
+   i2c0_sda_i;
+   i2c0_sda_o;
+   i2c0_sda_t;
+   i2c1_scl_i;
+   i2c1_scl_o;
+   i2c1_scl_t;
+   i2c1_sda_i;
+   i2c1_sda_o;
+   i2c1_sda_t;
+   
+   These ports must be connected to their counterparts (e.g. I2C0_SCL_T) on the
+   Zynq SOC.
+   
+*/
+
 `timescale 1ns/100ps
 
 module system_top (
@@ -102,8 +122,11 @@ module system_top (
   inout           i2c1_sda,
   inout           i2c1_scl,
   
-  output  [10:0]  gp_out,
-  input   [10:0]  gp_in);
+  inout           i2c0_sda,
+  inout           i2c0_scl,
+  
+  output  [9:0]  gp_out,
+  input   [9:0]  gp_in);
 
 
   // internal signals
@@ -124,9 +147,9 @@ module system_top (
   assign tx_gnd = 2'd0;
   assign clkout_out = clkout_in;
 //  assign gp_in_s[31: 0] = gp_out_s[31:0] ;
-  assign gp_out[10:0] = gp_out_s[10:0];
-  assign gp_in_s[31:11] = gp_out_s[31:11];
-  assign gp_in_s[10: 0] = gp_in[10:0];
+  assign gp_out[9:0] = gp_out_s[9:0];
+  assign gp_in_s[31:10] = gp_out_s[31:10];
+  assign gp_in_s[9: 0] = gp_in[9:0];
 // board gpio - 31-0
 
   assign gpio_i[31:31] = gpio_o[31:31];
@@ -206,6 +229,8 @@ module system_top (
     .gps_pps (1'b0),
     .iic_main_scl_io (iic_scl),
     .iic_main_sda_io (iic_sda),
+    .i2c0_scl_io (i2c0_scl),
+    .i2c0_sda_io (i2c0_sda),
     .i2c1_scl_io (i2c1_scl),
     .i2c1_sda_io (i2c1_sda),
     .otg_vbusoc (1'b0),
