@@ -152,11 +152,11 @@ set_property -dict {PACKAGE_PIN Y12 IOSTANDARD LVCMOS33} [get_ports {gp_in[8]}]
 set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports {gp_out[9]}]
 set_property -dict {PACKAGE_PIN Y13 IOSTANDARD LVCMOS33} [get_ports {gp_in[9]}]
 
-set_property PACKAGE_PIN W15 [get_ports i2c0_scl] ; ##U1
+set_property PACKAGE_PIN W15 [get_ports i2c0_scl] ; ##U1,W15,IO_L10_34_JX4_N,JX4,44,IO_L10_34_JX4_N,P6,27
 set_property IOSTANDARD LVCMOS33 [get_ports i2c0_scl]
 set_property PULLUP true [get_ports i2c0_scl]
 
-set_property PACKAGE_PIN T19 [get_ports i2c0_sda] ; ##U1,
+set_property PACKAGE_PIN T19 [get_ports i2c0_sda] ; ##U1,T19,IO_25_34_JX4,JX4,64,IO_25_34_JX4,P5,23
 set_property IOSTANDARD LVCMOS33 [get_ports i2c0_sda]
 set_property PULLUP true [get_ports i2c0_sda]
 
