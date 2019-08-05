@@ -81,6 +81,8 @@ module system_wrapper
     spi1_sdi_i,
     spi1_sdo_i,
     spi1_sdo_o,
+    uart0_tx,
+    uart0_rx,
     tdd_sync_i,
     tdd_sync_o,
     tdd_sync_t,
@@ -161,6 +163,8 @@ module system_wrapper
   input spi1_sdi_i;
   input spi1_sdo_i;
   output spi1_sdo_o;
+  output uart0_tx;
+  input  uart0_rx;
   input tdd_sync_i;
   output tdd_sync_o;
   output tdd_sync_t;
@@ -260,6 +264,8 @@ module system_wrapper
   wire spi1_sdi_i;
   wire spi1_sdo_i;
   wire spi1_sdo_o;
+  wire uart0_tx;
+  wire uart0_rx;
   wire tdd_sync_i;
   wire tdd_sync_o;
   wire tdd_sync_t;
@@ -388,6 +394,8 @@ module system_wrapper
         .spi1_sdi_i(spi1_sdi_i),
         .spi1_sdo_i(spi1_sdo_i),
         .spi1_sdo_o(spi1_sdo_o),
+        .uart0_tx(uart0_tx),
+        .uart0_rx(uart0_rx),
         .tdd_sync_i(tdd_sync_i),
         .tdd_sync_o(tdd_sync_o),
         .tdd_sync_t(tdd_sync_t),

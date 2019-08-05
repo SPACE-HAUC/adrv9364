@@ -125,8 +125,11 @@ module system_top (
   inout           i2c0_sda,
   inout           i2c0_scl,
   
-  output  [9:0]  gp_out,
-  input   [9:0]  gp_in);
+  input           uart0_rx,
+  output          uart0_tx,
+  
+  output  [8:0]  gp_out,
+  input   [8:0]  gp_in);
 
 
   // internal signals
@@ -147,9 +150,9 @@ module system_top (
   assign tx_gnd = 2'd0;
   assign clkout_out = clkout_in;
 //  assign gp_in_s[31: 0] = gp_out_s[31:0] ;
-  assign gp_out[9:0] = gp_out_s[9:0];
-  assign gp_in_s[31:10] = gp_out_s[31:10];
-  assign gp_in_s[9: 0] = gp_in[9:0];
+  assign gp_out[8:0] = gp_out_s[8:0];
+  assign gp_in_s[31:9] = gp_out_s[31:9];
+  assign gp_in_s[8: 0] = gp_in[8:0];
 // board gpio - 31-0
 
   assign gpio_i[31:31] = gpio_o[31:31];
@@ -255,6 +258,8 @@ module system_top (
     .spi1_sdi_i (spi1_miso),
     .spi1_sdo_i (1'b0),
     .spi1_sdo_o (spi1_mosi),
+    .uart0_tx(uart0_tx),
+    .uart0_rx(uart0_rx),
     .tdd_sync_i (1'b0),
     .tdd_sync_o (),
     .tdd_sync_t (),

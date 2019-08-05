@@ -149,8 +149,8 @@ set_property -dict {PACKAGE_PIN U8 IOSTANDARD LVCMOS33} [get_ports {gp_out[7]}]
 set_property -dict {PACKAGE_PIN Y11 IOSTANDARD LVCMOS33} [get_ports {gp_in[7]}]
 set_property -dict {PACKAGE_PIN T5 IOSTANDARD LVCMOS33} [get_ports {gp_out[8]}]
 set_property -dict {PACKAGE_PIN Y12 IOSTANDARD LVCMOS33} [get_ports {gp_in[8]}]
-set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports {gp_out[9]}]
-set_property -dict {PACKAGE_PIN Y13 IOSTANDARD LVCMOS33} [get_ports {gp_in[9]}]
+set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports {uart0_tx}] ; ##U1,U5,IO_L19_13_JX2_N,JX2,63,P2,48
+set_property -dict {PACKAGE_PIN Y13 IOSTANDARD LVCMOS33} [get_ports {uart0_rx}] ; ##U1,Y13,IO_L20_13_JX2_N,JX2,64,P2,47
 
 set_property PACKAGE_PIN W15 [get_ports i2c0_scl] ; ##U1,W15,IO_L10_34_JX4_N,JX4,44,IO_L10_34_JX4_N,P6,27
 set_property IOSTANDARD LVCMOS33 [get_ports i2c0_scl]
