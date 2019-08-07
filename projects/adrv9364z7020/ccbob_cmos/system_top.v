@@ -83,7 +83,7 @@ module system_top (
   inout           iic_scl,
   inout           iic_sda,
 
-  inout   [30:0]  gpio_bd,
+  inout   [31:0]  gpio_bd,
 
   input           rx_clk_in,
   input           rx_frame_in,
@@ -106,12 +106,12 @@ module system_top (
   inout   [ 7:0]  gpio_status,
 
   output          spi_csn,
-  output          spi_csn1,
-  output          spi_csn2,
   output          spi_clk,
   output          spi_mosi,
   input           spi_miso,
   
+  
+
   output          spi1_csn0,
   output          spi1_csn1,
   output          spi1_csn2,
@@ -133,12 +133,7 @@ module system_top (
 
 
   // internal signals
-//  wire            i2c1_sda_i;
-//  wire            i2c1_sda_o;
-//  wire            i2c1_sda_t;
-//  wire            i2c1_scl_i;
-//  wire            i2c1_scl_o;
-//  wire            i2c1_scl_t;  
+
   wire    [31:0]  gp_out_s;
   wire    [31:0]  gp_in_s;
   wire    [63:0]  gpio_i;
@@ -149,19 +144,19 @@ module system_top (
 
   assign tx_gnd = 2'd0;
   assign clkout_out = clkout_in;
-//  assign gp_in_s[31: 0] = gp_out_s[31:0] ;
   assign gp_out[8:0] = gp_out_s[8:0];
   assign gp_in_s[31:9] = gp_out_s[31:9];
   assign gp_in_s[8: 0] = gp_in[8:0];
-// board gpio - 31-0
 
-  assign gpio_i[31:31] = gpio_o[31:31];
+  // board gpio - 31-0
 
-  ad_iobuf #(.DATA_WIDTH(31)) i_iobuf_bd (
-    .dio_t (gpio_t[30:0]),
-    .dio_i (gpio_o[30:0]),
-    .dio_o (gpio_i[30:0]),
-    .dio_p (gpio_bd));
+  //assign gpio_i[31:31] = gpio_o[31:31];
+
+  ad_iobuf #(.DATA_WIDTH(32)) i_iobuf_bd (
+      .dio_t (gpio_t[31:0]),
+      .dio_i (gpio_o[31:0]),
+      .dio_o (gpio_i[31:0]),
+      .dio_p (gpio_bd));
 
   // ad9361 gpio - 63-32
 
@@ -178,20 +173,6 @@ module system_top (
               gpio_en_agc,        // 44:44
               gpio_ctl,           // 43:40
               gpio_status}));     // 39:32
-              
-//  ad_iobuf #(.DATA_WIDTH(1)) i_iobuf_sda (
-//    .dio_t (i2c1_sda_t),
-//    .dio_i (i2c1_sda_o),
-//    .dio_o (i2c1_sda_i),
-//    .dio_p (i2c1_sda)
-//  );
-  
-//  ad_iobuf #(.DATA_WIDTH(1)) i_iobuf_scl (
-//      .dio_t (i2c1_scl_t),
-//      .dio_i (i2c1_scl_o),
-//      .dio_o (i2c1_scl_i),
-//      .dio_p (i2c1_scl)
-//    );
 
   // instantiations
 
@@ -223,12 +204,6 @@ module system_top (
     .gpio_i (gpio_i),
     .gpio_o (gpio_o),
     .gpio_t (gpio_t),
-//    .i2c1_sda_i (i2c1_sda_i),
-//    .i2c1_sda_o (i2c1_sda_o),
-//    .i2c1_sda_t (i2c1_sda_t),
-//    .i2c1_scl_i (i2c1_scl_i),
-//    .i2c1_scl_o (i2c1_scl_o),
-//    .i2c1_scl_t (i2c1_scl_t),
     .gps_pps (1'b0),
     .iic_main_scl_io (iic_scl),
     .iic_main_sda_io (iic_sda),
@@ -243,8 +218,8 @@ module system_top (
     .spi0_clk_i (1'b0),
     .spi0_clk_o (spi_clk),
     .spi0_csn_0_o (spi_csn),
-    .spi0_csn_1_o (spi_csn1),
-    .spi0_csn_2_o (spi_csn2),
+    .spi0_csn_1_o (),
+    .spi0_csn_2_o (),
     .spi0_csn_i (1'b1),
     .spi0_sdi_i (spi_miso),
     .spi0_sdo_i (1'b0),
