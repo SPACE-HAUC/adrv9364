@@ -22,6 +22,11 @@ ADRVReceiver::ADRVReceiver(long long bandwidth, long long sampleFreq,
 	receiverConfig.rfport = radioPort;
 }
 
+ADRVReceiver::ADRVReceiver(struct stream_cfg* rxCfg)
+{
+	receiverConfig = *rxCfg;
+}
+
 ADRVReceiver::~ADRVReceiver()
 {
 
@@ -40,6 +45,12 @@ void ADRVReceiver::printObject()
 	cout << "LO FREQUENCY: " << receiverConfig.lo_hz << endl;
 	cout << "RF PORT: " << receiverConfig.rfport << endl;
 }
+
+bool ADRVReceiver::configureReceiver()
+{
+
+}
+
 
 enum PARSE_STATE {NO_PKT = 0, PKT_START, MSG_START, MSG, MSG_END, PKT_END};
 
@@ -66,7 +77,7 @@ void ADRVReceiver::receive(void* rxBuf, uint32_t* RXPKT, uint32_t &bufSize)
 
 		switch (state)
 		{
-			case NO_PKT: 
+			case NO_PKT:
 			{
 				header |= (currentByte << headerOffset);
 				headerOffset += 8;
@@ -107,7 +118,7 @@ void ADRVReceiver::receive(void* rxBuf, uint32_t* RXPKT, uint32_t &bufSize)
 							payload[i] = 0;
 						}
 						state = MSG_START;
-						
+
 					}
 					if (headerOffset > 24)
 					{
@@ -167,13 +178,13 @@ void ADRVReceiver::receive(void* rxBuf, uint32_t* RXPKT, uint32_t &bufSize)
 				break;
 			}
 		}
-		byteCount++;		
+		byteCount++;
 	}
 
 	/*
 	while (!validPacket)
 	{
-		
+
 
 		header |= currentByte;
 		if (header == PACKET_START)
