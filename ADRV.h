@@ -1,6 +1,19 @@
 
 #ifndef ADRV_H
 #define ADRV_H
+
+#include <string>
+#include <cstring>
+#include <iomanip>
+#include <stdint.h>
+#include <stdlib.h>
+
+const uint32_t HEADER_SIZE =  20;
+const uint32_t PACKET_START = 0x01535041;
+const uint32_t MESSAGE_START = 0x02434548;
+const uint32_t MESSAGE_END = 0x03415543;
+const uint32_t PACKET_END = 0x04554D4C;
+
 struct stream_cfg
 {
   long long bw_hz;
@@ -18,40 +31,6 @@ public:
   virtual void printObject();
 protected:
   int ADRV_id;
-};
-
-class ADRV_transmitter : public ADRV
-{
-public:
-  // Done
-  ADRV_transmitter();
-  // Done
-  ADRV_transmitter(long long bandwidth, long long sampleFreq, long long loFreq,
-                    const char* radioPort);
-  // Done
-  ~ADRV_transmitter();
-  // Done
-  void printID();
-  // Done
-  void printObject();
-  // Done
-  void transmit(void* txBuf, uint32_t bufSize, uint32_t *TXPKT);
-private:
-  struct stream_cfg transmitterConfig;
-};
-
-class ADRV_receiver : public ADRV
-{
-public:
-  ADRV_receiver();
-  ADRV_receiver(long long bandwidth, long long sampleFreq, long long loFreq,
-                const char* radioPort);
-  ~ADRV_receiver();
-  void printID();
-  void printObject();
-  void receive(void* rxBuf, uint32_t *RXPKT);
-private:
-  struct stream_cfg receiverConfig;
 };
 
 #endif

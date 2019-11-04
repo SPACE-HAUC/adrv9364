@@ -49,7 +49,7 @@ int main()
 	}
 	cout << "NUM ELEMENTS: " << msgLengthElements << endl;
 	cout << "NUM BYTES: " << msgLengthBytes << endl;
-	system("PAUSE");
+
 
 	/*for (int i = 0; i < 100; i++)
 	{
