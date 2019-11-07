@@ -11,6 +11,7 @@ ADRVReceiver::ADRVReceiver()
 	receiverConfig.fs_hz = 0;
 	receiverConfig.lo_hz = 0;
 	receiverConfig.rfport = "NO SELECTION";
+	cout << "RX CONST CALLED" << endl;
 }
 
 ADRVReceiver::ADRVReceiver(long long bandwidth, long long sampleFreq,
@@ -180,64 +181,4 @@ void ADRVReceiver::receive(void* rxBuf, uint32_t* RXPKT, uint32_t &bufSize)
 		}
 		byteCount++;
 	}
-
-	/*
-	while (!validPacket)
-	{
-
-
-		header |= currentByte;
-		if (header == PACKET_START)
-		{
-			cout << "FOUND HEADER!" << endl;
-			validPacket = true;
-		}
-		else
-		{
-			header <<= 8;
-		}
-		byteCount++;
-	} */
-
-	/*
-	for (int i = 0; i < 20; i++)
-	{
-		cout << std::hex << ((uint32_t*)rxBuf)[i] << endl;
-	}
-
-	std::memcpy(&header, (uint32_t*)rxBuf, 4);
-	cout << "HEADER: " << header << endl;
-	system("PAUSE");
-	if (header == PACKET_START)
-	{
-		std::memcpy(&dataSize, (rxBuf + 4), 4);
-		cout << "DATA SIZE: " << dataSize << endl;
-		if (dataSize > 0)
-		{
-			payload = (uint32_t*)malloc(dataSize);
-			std::memcpy(&header, &((uint32_t*)rxBuf)[8], 4);
-			if (header == MESSAGE_START)
-			{
-				std::memcpy(&payload, &((uint32_t*)rxBuf)[12], dataSize);
-				std::memcpy(&header, &((uint32_t*)rxBuf)[dataSize], 4);
-				if (header == MESSAGE_END)
-				{
-					std::memcpy(&header, &((uint32_t*)rxBuf)[dataSize + 4], 4);
-					if (header == PACKET_END)
-					{
-						cout << "PACKET SUCCESSFULLY RECEIVED - PAYLOAD: " << endl;
-						for (int i = 0; i < (dataSize / sizeof(uint32_t)); i++)
-						{
-							cout << "PAYLOAD BYTE i = " << i << ": " << payload[i] << endl;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	if (payload != NULL)
-	{
-		RXPKT = payload;
-	} */
 }

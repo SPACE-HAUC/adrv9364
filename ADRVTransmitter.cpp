@@ -6,22 +6,23 @@
 using std::cout;
 using std::endl;
 
-ADRVTransmitter::ADRVTransmitter()
+ADRVTransmitter::ADRVTransmitter:ADRV()
 {
 	transmitterConfig.bw_hz = 0;
 	transmitterConfig.fs_hz = 0;
 	transmitterConfig.lo_hz = 0;
 	transmitterConfig.rfport = "NO SELECTION";
+	cout << "TX CONST CALLED" << endl;
 }
 
-ADRVTransmitter::ADRVTransmitter(long long bandwidth, long long sampleFreq,
+/*ADRVTransmitter::ADRVTransmitter(long long bandwidth, long long sampleFreq,
 	long long loFreq, const char* radioPort)
 {
 	transmitterConfig.bw_hz = bandwidth;
 	transmitterConfig.fs_hz = sampleFreq;
 	transmitterConfig.lo_hz = loFreq;
 	transmitterConfig.rfport = radioPort;
-}
+} */
 
 ADRVTransmitter::~ADRVTransmitter()
 {
@@ -57,7 +58,7 @@ void ADRVTransmitter::transmit(void* txBuf, uint32_t bufSize, uint32_t* TXPKT)
 		packet[packetIndexCount - 2] = MESSAGE_END;
 		packet[packetIndexCount - 1] = PACKET_END;
 	}
-	
+
 	cout << "PACKET TRANSMITTED!" << endl;
 
 	if (packet != NULL)

@@ -4,7 +4,7 @@
 
 #include "ADRV.h"
 
-class ADRVReceiver : public ADRV
+class ADRVReceiver : virtual public ADRV
 {
 public:
 	ADRVReceiver();

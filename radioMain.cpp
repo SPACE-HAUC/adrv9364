@@ -1,8 +1,9 @@
 
 #include <iostream>
 #include <string>
-#include "ADRVReceiver.h"
-#include "ADRVTransmitter.h"
+#include "ADRV.h"
+//#include "ADRVReceiver.h"
+//#include "ADRVTransmitter.h"
 
 using std::cout;
 using std::endl;
@@ -20,11 +21,36 @@ void stringToUINT32(string baseString, uint32_t *& convertedMessage, uint32_t &a
 
 int main()
 {
-	ADRVTransmitter t1;
-	ADRVTransmitter t2(50, 50, 50, "PORT A");
-	ADRVReceiver r1;
-	ADRVReceiver r2(50, 50, 50, "PORT B");
+	struct stream_cfg txConfiguration;
+	struct stream_cfg rxConfiguration;
 
+	txConfiguration.bw_hz = 10;
+	txConfiguration.fs_hz = 20;
+	txConfiguration.lo_hz = 10;
+	txConfiguration.rfport = "A";
+
+	rxConfiguration.bw_hz = 10;
+	rxConfiguration.fs_hz = 20;
+	rxConfiguration.lo_hz = 10;
+	rxConfiguration.rfport = "A";
+
+	ADRV satTransceiver(txConfiguration, rxConfiguration);
+	satTransceiver.printID();
+
+	satTransceiver.initializeTransmitter();
+
+
+
+
+	//satCPU.contextHK();
+	//ADRVTransmitter t1;
+	//t1.contextHK();
+	//ADRVTransmitter t2(50, 50, 50, "PORT A");
+//	ADRVReceiver r1;
+	//r1.contextHK();
+	//ADRVReceiver r2(50, 50, 50, "PORT B");
+
+/*
 	uint32_t TXBUF[1000];
 	uint32_t RXBUF[1000];
 
@@ -41,7 +67,8 @@ int main()
 	uint32_t msgLengthElements;
 	uint32_t msgLengthBytes;
 	uint32_t rxBufLength = 0;
-
+*/
+	/*
 	stringToUINT32(helloWorld, helloWorldUI, msgLengthElements, msgLengthBytes);
 	for (int i = 0; i < msgLengthElements; i++)
 	{
@@ -51,30 +78,16 @@ int main()
 	cout << "NUM BYTES: " << msgLengthBytes << endl;
 
 
-	/*for (int i = 0; i < 100; i++)
-	{
-		sampleData[i] = i;
-		//cout << "INDEX i = " << i << ": " << sampleData[i] << endl;
-	}*/
+
 
 	t2.transmit((void*)helloWorldUI, msgLengthBytes, TXBUF);
-	/*for (int i = 0; i < 50; i++)
-	{
-		cout << std::hex << TXBUF[i] << endl;
-	}*/
 	r2.receive((void*)TXBUF, RXBUF, rxBufLength);
 
 	cout << rxBufLength << endl;
 	for (int i = 0; i < rxBufLength; i++)
 	{
 		cout << (char)RXBUF[i] << endl;
-	}
-
-	/*for (int i = 0; i < 50; i++)
-	{
-		cout << (char)RXBUF[i] << endl;
-	}*/
-
+	} */
 	return 0;
 
 }
