@@ -66,7 +66,7 @@ public:
 
   void printID();
   void printObject();
-private:
+//private:
 
   /* ********** IIO CONSTRUCTS **********/
 
