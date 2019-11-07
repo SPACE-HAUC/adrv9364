@@ -28,6 +28,8 @@ enum type_trx { RXMODE = 0, TXMODE = 1};
 enum cyclicMode { NONCYCLIC = 0, CYCLIC = 1 };
 typedef unsigned long long int gigaInt;
 
+static struct iio_buffer* txBuf;
+
 struct stream_cfg
 {
   gigaInt bw_hz;
@@ -82,7 +84,7 @@ public:
   struct iio_channel* tx0_i;
   struct iio_channel* tx_phys;
   struct iio_channel* tx_lo;
-  static struct iio_buffer* txBuf;
+
   struct stream_cfg txConfig;
 
   // Receiver Module
