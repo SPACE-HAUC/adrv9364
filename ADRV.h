@@ -82,7 +82,7 @@ private:
   struct iio_channel* tx0_i;
   struct iio_channel* tx_phys;
   struct iio_channel* tx_lo;
-  struct iio_buffer* txBuf;
+  static struct iio_buffer* txBuf;
   struct stream_cfg txConfig;
 
   // Receiver Module
@@ -91,7 +91,7 @@ private:
   struct iio_channel* rx0_i;
   struct iio_channel* rx_phys;
   struct iio_channel* rx_lo;
-  struct iio_buffer* rxBuf;
+  static struct iio_buffer* rxBuf;
   struct stream_cfg rxConfig;
 };
 

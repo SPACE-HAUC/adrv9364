@@ -173,7 +173,7 @@ void ADRV::initializeTransmitter()
       }
     }
 
-    txBuf = iio_device_create_buffer(tx, 1024 * 1024, NONCYCLIC);
+    txBuf = iio_device_create_buffer(tx, 1024 * 1024, false);
 
     if (txBuf == NULL)
     {
