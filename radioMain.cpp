@@ -24,6 +24,8 @@ int main()
 	struct stream_cfg txConfiguration;
 	struct stream_cfg rxConfiguration;
 
+	string testMessage = "Hello World!";
+
 	txConfiguration.bw_hz = 10;
 	txConfiguration.fs_hz = 20;
 	txConfiguration.lo_hz = 10;
@@ -37,8 +39,18 @@ int main()
 	ADRV satTransceiver(txConfiguration, rxConfiguration);
 	satTransceiver.printID();
 
-	satTransceiver.initializeTransmitter();
+	uint8_t* packet;
+	bool packetFlag = createPacket(testMessage.c_str(), testMessage.length(), packet);
+	//satTransceiver.initializeTransmitter();
+	//satTransceiver.initializeReceiver();
 
+	cout << "TX RX ONLINE" << endl;
+	//txBuffer = iio_device_create_buffer(satTransceiver.getTransmitter(), 1024 * 1024, false);
+
+	/*if (txBuffer == NULL)
+	{
+		cout << "ERROR CREATING BUFFER HERE!" << endl;
+	}*/
 
 
 

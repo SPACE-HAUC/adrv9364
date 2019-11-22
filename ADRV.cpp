@@ -23,19 +23,19 @@ ADRV::ADRV()
   rxConfig.lo_hz = 0;
   rxConfig.rfport = "NO SELECTION";
 
-  struct iio_device* tx = NULL;
-  struct iio_channel* tx0_q = NULL;
-  struct iio_channel* tx0_i = NULL;
-  struct iio_channel* tx_phys = NULL;
-  struct iio_channel* tx_lo = NULL;
-  struct iio_buffer* txBuf = NULL;
+  tx = NULL;
+  tx0_q = NULL;
+  tx0_i = NULL;
+  tx_phys = NULL;
+  tx_lo = NULL;
+  txBuf = NULL;
 
-  struct iio_device* rx = NULL;
-  struct iio_channel* rx0_q = NULL;
-  struct iio_channel* rx0_i = NULL;
-  struct iio_channel* rx_phys = NULL;
-  struct iio_channel* rx_lo = NULL;
-  struct iio_buffer* rxBuf = NULL;
+  rx = NULL;
+  rx0_q = NULL;
+  rx0_i = NULL;
+  rx_phys = NULL;
+  rx_lo = NULL;
+  rxBuf = NULL;
 }
 
 ADRV::ADRV(gigaInt tx_bw_hz, gigaInt tx_fs_hz, gigaInt tx_lo_hz,
@@ -57,21 +57,22 @@ ADRV::ADRV(gigaInt tx_bw_hz, gigaInt tx_fs_hz, gigaInt tx_lo_hz,
   rxConfig.lo_hz = rx_lo_hz;
   rxConfig.rfport = rx_portName;
 
-  struct iio_device* tx = NULL;
-  struct iio_channel* tx0_q = NULL;
-  struct iio_channel* tx0_i = NULL;
-  struct iio_channel* tx_phys = NULL;
-  struct iio_channel* tx_lo = NULL;
-  struct iio_buffer* txBuf = NULL;
+  tx = NULL;
+  tx0_q = NULL;
+  tx0_i = NULL;
+  tx_phys = NULL;
+  tx_lo = NULL;
+  txBuf = NULL;
 
-  struct iio_device* rx = NULL;
-  struct iio_channel* rx0_q = NULL;
-  struct iio_channel* rx0_i = NULL;
-  struct iio_channel* rx_phys = NULL;
-  struct iio_channel* rx_lo = NULL;
-  struct iio_buffer* rxBuf = NULL;
+  rx = NULL;
+  rx0_q = NULL;
+  rx0_i = NULL;
+  rx_phys = NULL;
+  rx_lo = NULL;
+  rxBuf = NULL;
 }
-    // Parameterized Constructor by structure
+
+// Parameterized Constructor by structure
 ADRV::ADRV(struct stream_cfg& txCfg, struct stream_cfg& rxCfg)
 {
   ADRV_id = 3;
@@ -82,21 +83,21 @@ ADRV::ADRV(struct stream_cfg& txCfg, struct stream_cfg& rxCfg)
   txConfig = txCfg;
   rxConfig = rxCfg;
 
-  struct iio_device* tx = NULL;
-  struct iio_channel* tx0_q = NULL;
-  struct iio_channel* tx0_i = NULL;
-  struct iio_channel* tx_phys = NULL;
-  struct iio_channel* tx_lo = NULL;
-  struct iio_buffer* txBuf = NULL;
+  tx = NULL;
+  tx0_q = NULL;
+  tx0_i = NULL;
+  tx_phys = NULL;
+  tx_lo = NULL;
+  txBuf = NULL;
 
-  struct iio_device* rx = NULL;
-  struct iio_channel* rx0_q = NULL;
-  struct iio_channel* rx0_i = NULL;
-  struct iio_channel* rx_phys = NULL;
-  struct iio_channel* rx_lo = NULL;
-  struct iio_buffer* rxBuf = NULL;
+  rx = NULL;
+  rx0_q = NULL;
+  rx0_i = NULL;
+  rx_phys = NULL;
+  rx_lo = NULL;
+  rxBuf = NULL;
 }
-
+//******************************************************************************
 ADRV::~ADRV()
 {
   cout << "ADRV DEST CONST CALL" << endl;
@@ -144,71 +145,123 @@ void ADRV::channelHK()
 
 }
 
+void ADRV::processError(errorCode error, bool debug)
+{
+  if (debug)
+  {
+    switch(error)
+    {
+      case NO_ERROR: break;
+      case DEV_ERROR: 
+        cout << "ERROR - DEVICE IN FAULT" << endl; 
+        break;
+      case CHN_ERROR:
+        cout << "ERROR - CHANNEL IN FAULT" << endl;
+        break;
+      case PHYS_ERROR:
+        cout << "ERROR - PHYSICAL DEVICE IN FAULT" << endl;
+        break;
+      case LO_ERROR:
+        cout << "ERROR - LOCAL OSCILLATOR IN FAULT" << endl;
+        break;
+      case BUF_ERROR:
+        cout << "ERROR - BUFFER IN FAULT" << endl;
+        break;
+      default:
+        cout << "UNSPECIFIED ERROR" << endl;
+    }
+  }
+  
+}
+
 void ADRV::initializeTransmitter()
 {
   // Create the transmitter device
   tx = iio_context_find_device(ctx, TXDEVICE.c_str());
-
-  // Create the i and q channels
+  
+  // Proceed if transmitter created successfully
   if (tx != NULL)
   {
+    cout << "***** Transmitter device initialized" << endl;
     tx0_i = iio_device_find_channel(tx, "voltage0", TXMODE);
+   
     if (tx0_i == NULL)
     {
       cout << "COULD NOT FIND TX VOLTAGE0, USING ALTVOLTAGE" << endl;
       tx0_i = iio_device_find_channel(tx, "altvoltage0", TXMODE);
       if (tx0_i == NULL)
       {
-        cout << "ERROR COULD NOT CREATE TX0_I CHANNEL" << endl;
+        processError(CHN_ERROR, debugFlag);
       }
     }
+    else
+    {
+       cout << "********** Transmitter device, i-channel initialized" << endl;
+    }
+    
     tx0_q = iio_device_find_channel(tx, "voltage1", TXMODE);
+    
     if (tx0_q == NULL)
     {
       cout << "COULD NOT FIND TX VOLTAGE1, USING ALTVOLTAGE" << endl;
       tx0_q = iio_device_find_channel(tx, "altvoltage1", TXMODE);
       if (tx0_q == NULL)
       {
-        cout << "ERROR COULD NOT CREATE TX0_Q CHANNEL" << endl;
+        processError(CHN_ERROR, debugFlag);
       }
     }
-
-    txBuf = iio_device_create_buffer(tx, 1024 * 1024, false);
-
-    if (txBuf == NULL)
+    else
     {
-      cout << "ERROR COULD NOT CREATE TX BUFFER" << endl;
+      cout << "********** Transmitter device, q-channel initialized" << endl;
     }
+    
   }
-
+  else
+  {
+    processError(DEV_ERROR, debugFlag);
+  }
+  
   // Create the transmitter physical channel
   tx_phys = iio_device_find_channel(physDev, "voltage0", true);
+  
   if (tx_phys != NULL)
   {
+    cout << "********** Transmitter device, phys-channel initialized" << endl;
     iio_channel_attr_write_longlong(tx_phys, ATTR_BW.c_str(), txConfig.bw_hz);
     iio_channel_attr_write_longlong(tx_phys, ATTR_FS.c_str(), txConfig.fs_hz);
     iio_channel_attr_write(tx_phys, ATTR_PORT.c_str(), txConfig.rfport);
   }
   else
   {
-    cout << "ERROR WITH INITIALIZING PHYSICAL TRANSMITTER CHANNEL" << endl;
+    processError(PHYS_ERROR, debugFlag);
   }
 
   // Create the transmitter local oscillator
   tx_lo = iio_device_find_channel(physDev, "altvoltage1", true);
   if (tx_lo != NULL)
   {
+    cout << "********** Transmitter device, lo-channel initialized" << endl;
     iio_channel_attr_write_longlong(tx_lo, ATTR_F.c_str(), txConfig.lo_hz);
   }
   else
   {
-    cout << "ERROR WITH INITIALIZING TRANSMITTER LOCAL OSCILLATOR" << endl;
+    processError(LO_ERROR, debugFlag);
   }
-
+ 
   if (tx0_i != NULL && tx0_q != NULL)
   {
     iio_channel_enable(tx0_i);
     iio_channel_enable(tx0_q);
+    cout << "********** Transmitter channels i and q enabled" << endl;
+  }
+  txBuf = iio_device_create_buffer(tx, MAX_BUFFER_SIZE, NONCYCLIC);
+  if (txBuf == NULL)
+  {
+    processError(BUF_ERROR, debugFlag);
+  }
+  else
+  {
+    cout << "********** Transmitter buffer initialized" << endl;
   }
 }
 
@@ -219,6 +272,7 @@ void ADRV::initializeReceiver()
 
   if (rx != NULL)
   {
+    cout << "***** Receiver device initialized" << endl;
     rx0_i = iio_device_find_channel(rx, "voltage0", RXMODE);
     if (rx0_i == NULL)
     {
@@ -226,7 +280,7 @@ void ADRV::initializeReceiver()
       rx0_i = iio_device_find_channel(rx, "altvoltage0", RXMODE);
       if (rx0_i == NULL)
       {
-        cout << "ERROR COULD NOT CREATE RX0_I CHANNEL" << endl;
+        processError(CHN_ERROR, debugFlag);
       }
     }
     rx0_q = iio_device_find_channel(rx, "voltage1", RXMODE);
@@ -236,16 +290,13 @@ void ADRV::initializeReceiver()
       rx0_q = iio_device_find_channel(rx, "altvoltage1", RXMODE);
       if (rx0_q == NULL)
       {
-        cout << "ERROR COULD NOT CREATE RX0_Q CHANNEL" << endl;
+        processError(CHN_ERROR, debugFlag);
       }
     }
-
-    rxBuf = iio_device_create_buffer(rx, 1024 * 1024, NONCYCLIC);
-
-    if (rxBuf == NULL)
-    {
-      cout << "ERROR COULD NOT CREATE RX BUFFER" << endl;
-    }
+  }
+  else
+  {
+    processError(DEV_ERROR, debugFlag);
   }
 
   // Create the receiver physical channel
@@ -258,7 +309,7 @@ void ADRV::initializeReceiver()
   }
   else
   {
-    cout << "ERROR WITH INITIALIZING PHYSICAL RECEIVER CHANNEL" << endl;
+    processError(PHYS_ERROR, debugFlag);
   }
 
   // Create the receiver local oscillator
@@ -269,12 +320,62 @@ void ADRV::initializeReceiver()
   }
   else
   {
-    cout << "ERROR WITH INITIALIZING TRANSMITTER LOCAL OSCILLATOR" << endl;
+    processError(LO_ERROR, debugFlag);
   }
 
   if (rx0_i != NULL && rx0_q != NULL)
   {
     iio_channel_enable(rx0_i);
     iio_channel_enable(rx0_q);
+    cout << "********** Receiver channels i and q enabled" << endl;
   }
+    
+  rxBuf = iio_device_create_buffer(rx, MAX_BUFFER_SIZE, NONCYCLIC);
+
+  if (rxBuf == NULL)
+  {
+    processError(BUF_ERROR, debugFlag);
+  }
+}
+
+/*void ADRV::initializeBuffer(struct iio_buffer* buffer, mode operation)
+{
+  if (operation == TXMODE)
+  {
+    txBuf = buffer;
+  }
+  else if (operation == RXMODE)
+  {
+    rxBuf = buffer;
+  }
+}*/
+
+bool createPacket(const char* strMsg, uint32_t numBytes, uint8_t* packet)
+{
+  uint8_t* byteArray = (uint8_t*)malloc(numBytes + HEADER_SIZE);
+  uint32_t byteArrayIndex = (numBytes + HEADER_SIZE) / sizeof(uint8_t);
+
+  cout << "NUM ELEMENTS: " << byteArrayIndex << endl;
+  cout << "CREATING PACKET..." << endl;
+  std::memcpy(&byteArray[0], &PACKET_START, 4);
+  cout << "1" << endl;
+  std::memcpy(&byteArray[4], &numBytes, 4);
+  cout << "2" << endl;
+  std::memcpy(&byteArray[8], &MESSAGE_START, 4);
+  cout << "3" << endl;
+  std::memcpy(&byteArray[12], strMsg, numBytes);
+  cout << "4" << endl;
+  std::memcpy(&byteArray[byteArrayIndex - 8], &MESSAGE_END, 4);
+  std::memcpy(&byteArray[byteArrayIndex - 4], &PACKET_END, 4);
+
+  cout << "PACKET CREATED!" << endl;
+
+  for (int i = 0; i < byteArrayIndex; i++)
+  {
+    printf("BYTE AT %d = %02X\n", i, byteArray[i]);
+  }
+
+  packet = byteArray;
+
+	return true;
 }
