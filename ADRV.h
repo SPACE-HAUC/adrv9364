@@ -68,13 +68,17 @@ public:
   // Initialize the receiver module
   void initializeTransmitter();
 
+  void writePacketToBuffer(uint8_t* packet, uint32_t numBytes);
+  void readBufferToPacket(uint8_t* packet, uint32_t &numBytes);
+
   // Initialize the transmitter module
   void initializeReceiver();
 
   // Transmit bufSize bytes from txBuf array - TXPKT used for testing purposes
-  bool transmit(void* txBuf, uint32_t* TXPKT, uint32_t &bufSize);
+  //bool transmit(void* txBuf, uint32_t* TXPKT, uint32_t &bufSize);
+  void transmit();
   // Receive array rxBuf from the HW, extract the data and write bufSize bytes to RXPKT
-  bool receive(void* rxBuf, uint32_t* RXPKT, uint32_t &bufSize);
+  bool receive();
 
   void printID();
   void printObject();
@@ -109,6 +113,6 @@ private:
   struct stream_cfg rxConfig;
 };
 
-bool createPacket(const char* strMsg, uint32_t numBytes, uint8_t* packet);
+bool createPacket(const char* strMsg, uint32_t numBytes, uint8_t** packet, uint32_t &numBytesRet);
 
 #endif

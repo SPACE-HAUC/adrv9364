@@ -9,6 +9,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
+#define MHZ(x) ((long long)(x*1000000.0 + .5))
+#define GHZ(x) ((long long)(x*1000000000.0 + .5))
+
 void stringToUINT32(string baseString, uint32_t *& convertedMessage, uint32_t &arraySize, uint32_t &messageSizeBytes)
 {
 	for (int i = 0; i < baseString.length(); i++)
@@ -26,25 +29,50 @@ int main()
 
 	string testMessage = "Hello World!";
 
-	txConfiguration.bw_hz = 10;
-	txConfiguration.fs_hz = 20;
-	txConfiguration.lo_hz = 10;
+	txConfiguration.bw_hz = MHZ(1.5);
+	txConfiguration.fs_hz = MHZ(2.5);
+	txConfiguration.lo_hz = GHZ(2.5);
 	txConfiguration.rfport = "A";
 
-	rxConfiguration.bw_hz = 10;
-	rxConfiguration.fs_hz = 20;
-	rxConfiguration.lo_hz = 10;
-	rxConfiguration.rfport = "A";
+	rxConfiguration.bw_hz = MHZ(2);
+	rxConfiguration.fs_hz = MHZ(2.5);
+	rxConfiguration.lo_hz = GHZ(2.5);
+	rxConfiguration.rfport = "A_BALANCED";
 
 	ADRV satTransceiver(txConfiguration, rxConfiguration);
 	satTransceiver.printID();
 
 	uint8_t* packet;
-	bool packetFlag = createPacket(testMessage.c_str(), testMessage.length(), packet);
-	//satTransceiver.initializeTransmitter();
+	uint8_t* packet2;// = (uint8_t*)malloc(20 * sizeof(uint8_t));
+	//packet2 = (uint8_t*)malloc(32 * sizeof(uint8_t));
+
+	uint32_t packetSize = 0;
+	uint32_t packetSize2 = 0;
+	bool packetFlag = createPacket(testMessage.c_str(), testMessage.length(), &packet, packetSize);
+	 for (int i = 0; i < packetSize; i++)
+  	{
+    	printf("MAIN BYTE AT %d = %02X\n", i, packet[i]);
+ 	}
+
+	satTransceiver.initializeTransmitter();
 	//satTransceiver.initializeReceiver();
 
 	cout << "TX RX ONLINE" << endl;
+
+	satTransceiver.writePacketToBuffer(packet, packetSize);
+	satTransceiver.transmit();
+
+	/*packet2 = (uint8_t*)malloc(packetSize * sizeof(uint8_t));
+	satTransceiver.readBufferToPacket(packet2, packetSize2);
+
+	cout << "DATA MOVED TO BUFFER, DATA READ FROM BUFFER!" << endl;
+	cout << "BYTES READ: " << packetSize2 << endl;
+	for (int i = 0; i < packetSize2; i++)
+  	{
+    	printf("BYTE AT %d = %02X\n", i, packet2[i]);
+  	}*/
+	
+
 	//txBuffer = iio_device_create_buffer(satTransceiver.getTransmitter(), 1024 * 1024, false);
 
 	/*if (txBuffer == NULL)

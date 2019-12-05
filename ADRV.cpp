@@ -350,7 +350,73 @@ void ADRV::initializeReceiver()
   }
 }*/
 
-bool createPacket(const char* strMsg, uint32_t numBytes, uint8_t* packet)
+void ADRV::writePacketToBuffer(uint8_t* packet, uint32_t numBytes)
+{
+  /*uint8_t* p_dat = (uint8_t*)iio_buffer_first(txBuf, tx0_i);
+  cout << "PDAT SET" << endl;
+  //void *ptr = iio_buffer_first(txBuf, tx0_q);
+  for (int i = 0; i < numBytes; i++)
+  {
+    p_dat = packet[i];
+    p_dat += iio_buffer_step(txBuf);
+  }*/
+  /*char *p_dat, *p_end;
+	ptrdiff_t p_inc;
+  p_inc = iio_buffer_step(txBuf);
+  cout << "P INC: " << p_inc << endl;
+	p_end = iio_buffer_end(txBuf);
+  int i = 0;
+  for (p_dat = (char *)iio_buffer_first(txBuf, tx0_i); p_dat < p_end; p_dat += p_inc) 
+  {
+    *p_dat = packet[i];
+    i++;
+  }*/
+  //iio_buffer_set_data(txBuf, (void*)packet);
+  int i = 0;
+  cout << "WRITE: PACKET TO BUFFER" << endl;
+  for (uint8_t* ptr = (uint8_t*)iio_buffer_first(txBuf, tx0_i); ptr < iio_buffer_end(txBuf) && i < numBytes; ptr += iio_buffer_step(txBuf))
+  {
+    *ptr = packet[i];
+    i++;
+  }
+  cout << "WRITING COMPLETE" << endl;
+  //size_t bytesWritten = iio_channel_write(tx0_i, txBuf, packet, numBytes);
+  //cout << "MOVED " << bytesWritten << " BYTES OF DATA" << endl;
+  //std::memcpy(iio_buffer_start(txBuf), (void*)packet, numBytes);
+
+}
+
+void ADRV::transmit()
+{
+  size_t nbytes_tx = 0;
+  nbytes_tx = iio_buffer_push(txBuf);
+	cout << "BYTES PUSHED: " << nbytes_tx << endl;
+}
+
+void ADRV::receive()
+{
+  size_t nbytes_rx = 0;
+  nbytes_tx = iio_buffer_refill(rxBuf);
+  cout << "BYTES RECEIVED: " << nbytes_rx << endl;
+}
+
+void ADRV::readBufferToPacket(uint8_t* packet, uint32_t &numBytes)
+{
+  cout << "READ: BUFFER TO PACKET" << endl;
+  int i = 0;
+  for (uint8_t* ptr = (uint8_t*)iio_buffer_first(rxBuf, rx0_i); ptr < iio_buffer_end(rxBuf) && i < 32; ptr += iio_buffer_step(rxBuf))
+  {
+    //cout << "BUF at i = " << i << ": " << *ptr << endl;
+    packet[i] = *ptr;
+    i++;
+  }
+  numBytes = i; 
+  cout << "READING COMPLETE" << endl;
+}
+
+
+
+bool createPacket(const char* strMsg, uint32_t numBytes, uint8_t** packet, uint32_t &numBytesRet)
 {
   uint8_t* byteArray = (uint8_t*)malloc(numBytes + HEADER_SIZE);
   uint32_t byteArrayIndex = (numBytes + HEADER_SIZE) / sizeof(uint8_t);
@@ -375,7 +441,7 @@ bool createPacket(const char* strMsg, uint32_t numBytes, uint8_t* packet)
     printf("BYTE AT %d = %02X\n", i, byteArray[i]);
   }
 
-  packet = byteArray;
-
+  *packet = byteArray;
+  numBytesRet = byteArrayIndex;
 	return true;
 }
