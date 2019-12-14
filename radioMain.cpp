@@ -25,6 +25,48 @@ void stringToUINT32(string baseString, uint32_t *& convertedMessage, uint32_t &a
 int main()
 {
 	struct stream_cfg txConfiguration;
+	txConfiguration.bw_hz = MHZ(1.5);
+	txConfiguration.fs_hz = MHZ(2.5);
+	txConfiguration.lo_hz = GHZ(2.5);
+	txConfiguration.rfport = "A";
+
+	string testMessage = "Hello World!";
+
+	initADRV();
+
+	uint32_t* packet;
+	uint32_t packetSize = 0;
+	bool txFlag = initTX(&txConfiguration);
+	if (txFlag) 
+		cout << "INIT TX COMPLETE" << endl;
+	bool packetFlag = createPacket(testMessage.c_str(), testMessage.length(), &packet, packetSize)
+	
+	if (packetFlag)
+		cout << "PACKET FLAG COMPLETE" << endl;
+
+	for (int i = 0; i < packetSize; i++)
+  	{
+    	printf("MAIN BYTE AT %d = %02X\n", i, packet[i]);
+ 	}
+	
+	bool writeFlag = writePacketToBuffer(packet, packetSize);
+
+	if (writeFlag)
+		cout << "WRITE FLAG COMPLETE" << endl;
+
+	bool transmitFlag = transmit();
+
+	if (transmitFlag)
+		cout << "TRANSMIT COMPLETE" << endl;
+
+	return 0;
+}
+
+
+/*
+int main()
+{
+	struct stream_cfg txConfiguration;
 	struct stream_cfg rxConfiguration;
 
 	string testMessage = "Hello World!";
@@ -127,7 +169,7 @@ int main()
 	for (int i = 0; i < rxBufLength; i++)
 	{
 		cout << (char)RXBUF[i] << endl;
-	} */
+	} 
 	return 0;
 
-}
+} */

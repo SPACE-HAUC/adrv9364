@@ -1,5 +1,9 @@
-
+#include <unistd.h>
 #include "ADRV.h"
+#include <stdlib.h>
+#include <cstring>
+
+bool debugFlag = true;
 
 bool initADRV()
 {
@@ -17,8 +21,37 @@ bool initADRV()
     return initFlag;
 }
 
+bool processError(errorCode error, bool debug)
+{
+  if (debug)
+  {
+    switch(error)
+    {
+      case NO_ERROR: break;
+      case DEV_ERROR: 
+        cout << "ERROR - DEVICE IN FAULT" << endl; 
+        break;
+      case CHN_ERROR:
+        cout << "ERROR - CHANNEL IN FAULT" << endl;
+        break;
+      case PHYS_ERROR:
+        cout << "ERROR - PHYSICAL DEVICE IN FAULT" << endl;
+        break;
+      case LO_ERROR:
+        cout << "ERROR - LOCAL OSCILLATOR IN FAULT" << endl;
+        break;
+      case BUF_ERROR:
+        cout << "ERROR - BUFFER IN FAULT" << endl;
+        break;
+      default:
+        cout << "UNSPECIFIED ERROR" << endl;
+    }
+  }
+  
+}
 
-bool initTX(static struct stream_cfg* transmitterConfig)
+
+bool initTX(struct stream_cfg* transmitterConfig)
 {
     txConfig = *transmitterConfig;
     // Create the transmitter device
@@ -109,7 +142,7 @@ bool initTX(static struct stream_cfg* transmitterConfig)
     } 
 }
 
-bool initRX(static struct stream_cfg* receiverConfig)
+bool initRX(struct stream_cfg* receiverConfig)
 {
     rxConfig = *receiverConfig;
     // Create the receiver device
@@ -191,16 +224,16 @@ bool createPacket(const char* strMsg, uint32_t numBytes, uint32_t** packet, uint
     cout << "NUM ELEMENTS: " << byteArrayIndex << endl;
     cout << "CREATING PACKET..." << endl;
 
-    std::memcpy(&byteArray[0], &PACKET_START, 4]);
+    std::memcpy(&byteArray[0], &PACKET_START, 4);
     cout << "1" << endl;
-    std::memcpy(&byteArray[1], &numBytes, 4);
+    memcpy(&byteArray[1], &numBytes, 4);
     cout << "2" << endl;
-    std::memcpy(&byteArray[2], &MESSAGE_START, 4);
+    memcpy(&byteArray[2], &MESSAGE_START, 4);
     cout << "3" << endl;
-    std::memcpy(&byteArray[3], strMsg, numBytes);
+    memcpy(&byteArray[3], strMsg, numBytes);
     cout << "4" << endl;
-    std::memcpy(&byteArray[byteArrayIndex - 2], &MESSAGE_END, 4);
-    std::memcpy(&byteArray[byteArrayIndex - 1], &PACKET_END, 4);
+    memcpy(&byteArray[byteArrayIndex - 2], &MESSAGE_END, 4);
+    memcpy(&byteArray[byteArrayIndex - 1], &PACKET_END, 4);
 
     cout << "PACKET CREATED!" << endl;
 
@@ -213,8 +246,59 @@ bool createPacket(const char* strMsg, uint32_t numBytes, uint32_t** packet, uint
     return true;
 }
 
-bool writePacketToBuffer(uint32_t* packet, uint32_t numBytes);
-bool readBufferToPacket(uint32_t* packet, uint32_t* numBytesRet);
+bool writePacketToBuffer(uint32_t* packet, uint32_t numBytes)
+{
+    int i = 0;
+    cout << "WRITE: PACKET TO BUFFER" << endl;
+    for (uint32_t* ptr = (uint32_t*)iio_buffer_first(txBuf, tx0_i); ptr < iio_buffer_end(txBuf) && i < numBytes; ptr += iio_buffer_step(txBuf))
+    {
+        *ptr = packet[i];
+        i++;
+    }
+    cout << "WRITING COMPLETE" << endl;
+    return true;
+}
 
-bool transmit();
-bool receive();
+bool readBufferToPacket(uint32_t packet[50], uint32_t* numBytesRet)
+{
+    cout << "READ: BUFFER TO PACKET" << endl;
+    int i = 0;
+
+    uint32_t tempPacket[50];
+
+    uint32_t* temp_ptr = (uint32_t*)iio_buffer_first(rxBuf, rx0_i);
+
+    cout << *temp_ptr << endl;
+    cout << "I PRINTED A THING" << endl;
+
+
+
+    for (uint32_t* ptr = (uint32_t*)iio_buffer_first(rxBuf, rx0_i); ptr < iio_buffer_end(rxBuf) && i < 32; ptr += iio_buffer_step(rxBuf))
+    {
+        cout << "BUF at i = " << i << ": " << *ptr << endl;
+        tempPacket[i] = *ptr;
+        i++;
+    }
+    *numBytesRet = i; 
+    cout << "READING COMPLETE" << endl;
+    return true;
+}
+
+bool transmit()
+{
+    size_t nbytes_tx = 0;
+    nbytes_tx = iio_buffer_push(txBuf);
+	cout << "BYTES PUSHED: " << nbytes_tx << endl;
+    return true;
+}
+
+int receive()
+{
+    int nbytes_rx = 0;
+    nbytes_rx = iio_buffer_refill(rxBuf);
+    if ( nbytes_rx <= 0 )
+    cout << "BYTES RECEIVED: " << nbytes_rx << endl;
+    return nbytes_rx;
+}
+
+

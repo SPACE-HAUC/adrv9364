@@ -58,7 +58,7 @@ static struct iio_channel* tx0_i = NULL;
 static struct iio_channel* tx_phys = NULL;
 static struct iio_channel* tx_lo = NULL;
 static struct iio_buffer* txBuf = NULL;
-static struct stream_cfg txConfig = NULL;
+static struct stream_cfg txConfig;
 
 // Receiver Module
 static struct iio_device* rx = NULL;
@@ -67,24 +67,23 @@ static struct iio_channel* rx0_i = NULL;
 static struct iio_channel* rx_phys = NULL;
 static struct iio_channel* rx_lo = NULL;
 static struct iio_buffer* rxBuf = NULL;
-static struct stream_cfg rxConfig = NULL;
+static struct stream_cfg rxConfig;
 
-void contextHK(static struct iio_context* m_context);
-void deviceHK(static struct iio_device* m_device);
-void channelHK(static struct iio_channel* m_channel);
+void contextHK(struct iio_context* m_context);
+void deviceHK(struct iio_device* m_device);
+void channelHK(struct iio_channel* m_channel);
+bool processError(errorCode error, bool debug);
 
 bool initADRV();
-bool initTX(static struct stream_cfg* transmitterConfig);
-bool initRX(static struct stream_cfg* receiverConfig);
+bool initTX(struct stream_cfg* transmitterConfig);
+bool initRX(struct stream_cfg* receiverConfig);
 
 bool createPacket(const char* strMsg, uint32_t numBytes, uint32_t** packet, uint32_t* numBytesRet);
 bool writePacketToBuffer(uint32_t* packet, uint32_t numBytes);
-bool readBufferToPacket(uint32_t* packet, uint32_t* numBytesRet);
+bool readBufferToPacket(uint32_t packet[50], uint32_t* numBytesRet);
 
 bool transmit();
-bool receive();
-
-
+int receive();
 
 
 

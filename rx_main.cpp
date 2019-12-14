@@ -1,8 +1,8 @@
 
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "ADRV.h"
-
 using std::cout;
 using std::endl;
 using std::string;
@@ -25,17 +25,18 @@ int main()
     if (rxFlag)
         cout << "INIT RX COMPLETE" << endl;
 
-    bool receiveFlag = receive();
-
-    size_t bytesReceived = 0;
+    int bytesReceived = 0;
     do
     {
+        cout << "TRYING..." << endl;
         bytesReceived = receive();
-    } while (bytesReceived == 0);
+        cout << "CRYING..." << endl;
+        sleep(1);
+    } while ( bytesReceived < 0 ) ;
 
     uint32_t numBytesReceived = 0;
     uint32_t packet[50];
-
+    cout << "I RECEIVED " << bytesReceived << " BYTES" << endl;
 
     bool packetFlag = readBufferToPacket(packet, &numBytesReceived);
     for (int i = 0; i < numBytesReceived; i++)

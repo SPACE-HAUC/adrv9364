@@ -27,7 +27,7 @@ int main()
 	bool txFlag = initTX(&txConfiguration);
 	if (txFlag) 
 		cout << "INIT TX COMPLETE" << endl;
-	bool packetFlag = createPacket(testMessage.c_str(), testMessage.length(), &packet, packetSize)
+	bool packetFlag = createPacket(testMessage.c_str(), testMessage.length(), &packet, &packetSize);
 	
 	if (packetFlag)
 		cout << "PACKET FLAG COMPLETE" << endl;
