@@ -25,25 +25,32 @@ int main()
     if (rxFlag)
         cout << "INIT RX COMPLETE" << endl;
 
-    int bytesReceived = 0;
-    do
+    while ( 1 )
     {
-        cout << "TRYING..." << endl;
-        bytesReceived = receive();
-        cout << "CRYING..." << endl;
-        sleep(1);
-    } while ( bytesReceived < 0 ) ;
+        int bytesReceived = 0;
+        do
+        {
+            cout << "TRYING..." << endl;
+            bytesReceived = receive();
+            cout << "CRYING..." << endl;
+            sleep(1);
+        } while ( bytesReceived < 0 ) ;
 
-    uint32_t numBytesReceived = 0;
-    uint32_t packet[50];
-    cout << "I RECEIVED " << bytesReceived << " BYTES" << endl;
+        uint32_t numBytesReceived = 0;
+        uint32_t packet[50];
+        cout << "I RECEIVED " << bytesReceived << " BYTES" << endl;
 
-    bool packetFlag = readBufferToPacket(packet, &numBytesReceived);
-    for (int i = 0; i < numBytesReceived; i++)
-  	{
-    	printf("MAIN BYTE AT %d = %02X\n", i, packet[i]);
- 	}
-
+        bool packetFlag = readBufferToPacket(packet, &numBytesReceived);
+        for (int i = 0; i < numBytesReceived; i++)
+        {
+            for ( int j = 0 ; j < 4 ; j++ )
+            {
+                printf("%c ",(char)(packet[i]>>8*j)) ;
+            }
+        }
+        cout << endl ;
+        sleep(0.25);
+    }
 	return 0;
 }
 

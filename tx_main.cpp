@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "ADRV.h"
 
 using std::cout;
@@ -36,16 +37,18 @@ int main()
   	{
     	printf("MAIN BYTE AT %d = %02X\n", i, packet[i]);
  	}
-	
-	bool writeFlag = writePacketToBuffer(packet, packetSize);
+	while(1){
+		bool writeFlag = writePacketToBuffer(packet, packetSize);
 
-	if (writeFlag)
-		cout << "WRITE FLAG COMPLETE" << endl;
+		if (writeFlag)
+			cout << "WRITE FLAG COMPLETE" << endl;
 
-	bool transmitFlag = transmit();
+		bool transmitFlag = transmit();
 
-	if (transmitFlag)
-		cout << "TRANSMIT COMPLETE" << endl;
+		if (transmitFlag)
+			cout << "TRANSMIT COMPLETE" << endl;
+		sleep(1);
+	}
 
 	return 0;
 }
