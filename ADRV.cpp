@@ -228,11 +228,11 @@ bool createPacket(const char* strMsg, uint32_t numBytes, uint32_t** packet, uint
     cout << "1" << endl;
     memcpy(&byteArray[1], &numBytes, 4);
     cout << "2" << endl;
-    for ( int i = 0 ; i < numBytes ; i++ )
-    {
-        uint32_t temp = ((uint32_t)(strMsg[i]))<<4 ;
-        memcpy(&byteArray[3+4*i], &temp, 4) ;
-    }
+    // for ( int i = 0 ; i < numBytes ; i++ )
+    // {
+    //     uint32_t temp = ((uint32_t)(strMsg[i]))<<4 ;
+    //     memcpy(&byteArray[3+4*i], &temp, 4) ;
+    // }
     memcpy(&byteArray[2], &MESSAGE_START, 4);
     cout << "3" << endl;
     memcpy(&byteArray[3], strMsg, numBytes);
@@ -258,7 +258,7 @@ bool writePacketToBuffer(uint32_t* packet, uint32_t numBytes)
     cout << "WRITE: PACKET TO BUFFER" << endl;
     for (uint32_t* ptr = (uint32_t*)iio_buffer_first(txBuf, tx0_i); ptr < iio_buffer_end(txBuf) && i < numBytes; ptr += iio_buffer_step(txBuf))
     {
-        *ptr = packet[i];
+        *ptr = packet[i]<<4;
         i++;
     }
     cout << "WRITING COMPLETE" << endl;
