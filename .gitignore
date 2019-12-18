@@ -77,3 +77,4 @@ reconfig_mif
 gui
 .timestamp_altera
 
+*.out

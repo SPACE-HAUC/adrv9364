@@ -228,6 +228,11 @@ bool createPacket(const char* strMsg, uint32_t numBytes, uint32_t** packet, uint
     cout << "1" << endl;
     memcpy(&byteArray[1], &numBytes, 4);
     cout << "2" << endl;
+    for ( int i = 0 ; i < numBytes ; i++ )
+    {
+        uint32_t temp = ((uint32_t)(strMsg[i]))<<4 ;
+        memcpy(&byteArray[3+4*i], &temp, 4) ;
+    }
     memcpy(&byteArray[2], &MESSAGE_START, 4);
     cout << "3" << endl;
     memcpy(&byteArray[3], strMsg, numBytes);
@@ -239,8 +244,9 @@ bool createPacket(const char* strMsg, uint32_t numBytes, uint32_t** packet, uint
 
     for (uint32_t i = 0; i < byteArrayIndex; i++)
     {
-        printf("WORD AT %d = %08X\n", i, byteArray[i]);
+        printf("0x%08X ", byteArray[i]);
     }
+    printf("\n") ;
     *packet = byteArray;
     *numBytesRet = (numBytes + HEADER_SIZE);
     return true;
@@ -276,7 +282,7 @@ bool readBufferToPacket(uint32_t packet[50], uint32_t* numBytesRet)
     for (uint32_t* ptr = (uint32_t*)iio_buffer_first(rxBuf, rx0_i); ptr < iio_buffer_end(rxBuf) && i < 32; ptr += iio_buffer_step(rxBuf))
     {
         cout << "BUF at i = " << i << ": " << *ptr << endl;
-        tempPacket[i] = *ptr;
+        tempPacket[i] = (*ptr)>>4;
         i++;
     }
     *numBytesRet = i; 
