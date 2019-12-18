@@ -270,8 +270,6 @@ bool readBufferToPacket(uint32_t packet[50], uint32_t* numBytesRet)
     cout << "READ: BUFFER TO PACKET" << endl;
     int i = 0;
 
-    uint32_t tempPacket[50];
-
     uint32_t* temp_ptr = (uint32_t*)iio_buffer_first(rxBuf, rx0_i);
 
     cout << *temp_ptr << endl;
@@ -282,7 +280,7 @@ bool readBufferToPacket(uint32_t packet[50], uint32_t* numBytesRet)
     for (uint32_t* ptr = (uint32_t*)iio_buffer_first(rxBuf, rx0_i); ptr < iio_buffer_end(rxBuf) && i < 32; ptr += iio_buffer_step(rxBuf))
     {
         cout << "BUF at i = " << i << ": " << *ptr << endl;
-        tempPacket[i] = (*ptr)>>4;
+        packet[i] = (*ptr)>>4;
         i++;
     }
     *numBytesRet = i; 
