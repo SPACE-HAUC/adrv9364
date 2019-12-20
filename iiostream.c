@@ -349,7 +349,7 @@ int main (int argc, char **argv)
 			// Example: swap I and Q
 			const int16_t i = ((int16_t*)p_dat)[0]; // Real (I)
 			const int16_t q = ((int16_t*)p_dat)[1]; // Imag (Q)
-			printf("%x %x | ", i, q);
+			printf("%2X %2X | ", (unsigned char)i >> 4, (unsigned char)q >> 4);
 			((int16_t*)p_dat)[0] = q;
 			((int16_t*)p_dat)[1] = i;
 		}
