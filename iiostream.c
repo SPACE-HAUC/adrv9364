@@ -316,12 +316,12 @@ int main (int argc, char **argv)
 	iio_channel_enable(tx0_q);
 
 	printf("* Creating non-cyclic IIO buffers with 1 MiS\n");
-	rxbuf = iio_device_create_buffer(rx, 1024*1024, false);
+	rxbuf = iio_device_create_buffer(rx, 20, false);
 	if (!rxbuf) {
 		perror("Could not create RX buffer");
 		shutdown();
 	}
-	txbuf = iio_device_create_buffer(tx, 1024*1024, false);
+	txbuf = iio_device_create_buffer(tx, 20, false);
 	if (!txbuf) {
 		perror("Could not create TX buffer");
 		shutdown();
@@ -353,7 +353,7 @@ int main (int argc, char **argv)
 			((int16_t*)p_dat)[0] = q;
 			((int16_t*)p_dat)[1] = i;
 		}
-
+		printf("\n");
 		// WRITE: Get pointers to TX buf and write IQ to TX buf port 0
 		p_inc = iio_buffer_step(txbuf);
 		p_end = iio_buffer_end(txbuf);
@@ -366,9 +366,9 @@ int main (int argc, char **argv)
 		}
 
 		// Sample counter increment and status output
-		// nrx += nbytes_rx / iio_device_get_sample_size(rx);
-		// ntx += nbytes_tx / iio_device_get_sample_size(tx);
-		// printf("\tRX %8.2f MSmp, TX %8.2f MSmp\n", nrx/1e6, ntx/1e6);
+		nrx += nbytes_rx / iio_device_get_sample_size(rx);
+		ntx += nbytes_tx / iio_device_get_sample_size(tx);
+		printf("\tRX %8.2f MSmp, TX %8.2f MSmp\n", nrx/1e6, ntx/1e6);
 	}
 
 	shutdown();
