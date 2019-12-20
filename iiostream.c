@@ -349,6 +349,7 @@ int main (int argc, char **argv)
 			// Example: swap I and Q
 			const int16_t i = ((int16_t*)p_dat)[0]; // Real (I)
 			const int16_t q = ((int16_t*)p_dat)[1]; // Imag (Q)
+			printf("%x %x | ", i, q);
 			((int16_t*)p_dat)[0] = q;
 			((int16_t*)p_dat)[1] = i;
 		}
@@ -360,14 +361,14 @@ int main (int argc, char **argv)
 			// Example: fill with zeros
 			// 12-bit sample needs to be MSB alligned so shift by 4
 			// https://wiki.analog.com/resources/eval/user-guides/ad-fmcomms2-ebz/software/basic_iq_datafiles#binary_format
-			((int16_t*)p_dat)[0] = 0 << 4; // Real (I)
-			((int16_t*)p_dat)[1] = 0 << 4; // Imag (Q)
+			((int16_t*)p_dat)[0] = 'a' << 4; // Real (I)
+			((int16_t*)p_dat)[1] = 'a' << 4; // Imag (Q)
 		}
 
 		// Sample counter increment and status output
-		nrx += nbytes_rx / iio_device_get_sample_size(rx);
-		ntx += nbytes_tx / iio_device_get_sample_size(tx);
-		printf("\tRX %8.2f MSmp, TX %8.2f MSmp\n", nrx/1e6, ntx/1e6);
+		// nrx += nbytes_rx / iio_device_get_sample_size(rx);
+		// ntx += nbytes_tx / iio_device_get_sample_size(tx);
+		// printf("\tRX %8.2f MSmp, TX %8.2f MSmp\n", nrx/1e6, ntx/1e6);
 	}
 
 	shutdown();
